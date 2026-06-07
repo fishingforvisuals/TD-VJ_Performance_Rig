@@ -1,0 +1,22 @@
+# OS files
+.DS_Store
+Thumbs.db
+
+# TouchDesigner generated / temporary files
+*.tmp
+*.log
+*.cache
+*.cook*
+*.tox?~
+*.bak
+*.mov
+*.*.toe
+/Backup
+
+# Common local output folders
+output/
+renders/
+cache/
+
+# visual library
+/tox
