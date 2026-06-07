@@ -30,3 +30,11 @@ It would be nice to add functionalities for other data assignments e.g. CHOPs
 - external tox midi fighter twister doesn't work
 - visuals are loaded from tox files when reloading them parameter
 - tox visuals need a name in the lib preview
+
+
+## next tasks
+[ ] rework library management
+[ ] update scene loader
+[ ] update drag and drop scripts
+[ ] fix midi twister assignments
+[ ] fix storing the assignments with the visuals
