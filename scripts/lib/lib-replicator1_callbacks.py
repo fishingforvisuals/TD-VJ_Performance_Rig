@@ -17,9 +17,11 @@ def onRemoveReplicant(comp, replicant):
 def onReplicate(comp, allOps, newOps, template, master):
 
     for c in newOps:
-        # run("op('{}').viewer = False".format(c.path), delayFrames=1)
+        run("op('{}').viewer = False".format(c.path), delayFrames=1)
         # c.render = True
         c.par.display = 1
+        c.allowCooking = 1
+
         # c.par.clone = comp.par.master
         c.op("visual").par.enableexternaltoxpulse.pulse()
         op("video_input").outputConnectors[0].connect(c.inputConnectors[0])
@@ -28,10 +30,18 @@ def onReplicate(comp, allOps, newOps, template, master):
         # c.op("visual").par.h = 300
         c.op("visual").par.hmode = 1
         c.op("visual").par.vmode = 1
-        # c.op("visual").par.display = 0
-        # parent().SetupThumbnail(c)
+        c.op("visual").par.display = 0
+
+        name = str(c.digits) + "_" + str(op("folder1")[c.digits, "name"])
+        name_clean = name.replace(".tox", "").replace(" ", "")
+        c.name = name_clean
+
+        parent().SetupThumbnail(c)
         # parent().RestoreBindings(c)
         c.par.alignorder = c.digits
+
+        # TODO: disable cooking from Visuals
+        c.op("visual").allowCooking = 1
         pass
 
     return

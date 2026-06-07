@@ -33,8 +33,8 @@ It would be nice to add functionalities for other data assignments e.g. CHOPs
 
 
 ## next tasks
-[ ] rework library management
-[ ] update scene loader
-[ ] update drag and drop scripts
-[ ] fix midi twister assignments
-[ ] fix storing the assignments with the visuals
+- [x] rework library management
+- [ ] update drag and drop scripts
+- [ ] update scene loader
+- [ ] fix midi twister assignments
+- [ ] fix storing the assignments with the visuals

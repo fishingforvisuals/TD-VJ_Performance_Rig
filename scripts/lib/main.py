@@ -7,8 +7,8 @@ class LibraryEXT:
         debug(
             f"[LibraryEXT] Extension initialized on {ownerCOMP.path}"
         )  # this is already your container COMP
-        self.oop = self.ownerCOMP  # just use it directly // FIXME adasd
-        # TODO:adjlas
+        self.oop = self.ownerCOMP  # just use it directly
+
         # -----------------------------------------------------------------
         # Thumbnail folder
         # -----------------------------------------------------------------
