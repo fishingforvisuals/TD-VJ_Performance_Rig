@@ -7,8 +7,8 @@ class LibraryEXT:
         debug(
             f"[LibraryEXT] Extension initialized on {ownerCOMP.path}"
         )  # this is already your container COMP
-        self.oop = self.ownerCOMP  # just use it directly
-
+        self.oop = self.ownerCOMP  # just use it directly // FIXME adasd
+        # TODO:adjlas
         # -----------------------------------------------------------------
         # Thumbnail folder
         # -----------------------------------------------------------------
@@ -145,25 +145,45 @@ class LibraryEXT:
             else:
                 continue  # skip unbound
 
-            debug(f"[{script_name}] Processing param '{par.name}' -> type: {bind_type}, value: {value}")
+            debug(
+                f"[{script_name}] Processing param '{par.name}' -> type: {bind_type}, value: {value}"
+            )
 
             # Check if this param already exists in the table
             existing_row = None
             for r in range(1, self.bindings_table.numRows):
                 rep_name = self.bindings_table[r, 0].val
                 par_name = self.bindings_table[r, 1].val
-                row_slot = int(self.bindings_table[r, 4].val) if self.bindings_table.numCols > 4 else 1
-                if rep_name == replicant.name and par_name == par.name and row_slot == slot_val:
+                row_slot = (
+                    int(self.bindings_table[r, 4].val)
+                    if self.bindings_table.numCols > 4
+                    else 1
+                )
+                if (
+                    rep_name == replicant.name
+                    and par_name == par.name
+                    and row_slot == slot_val
+                ):
                     existing_row = r
                     break
 
             if existing_row is not None:
                 old_type = self.bindings_table[existing_row, 2].val
                 old_val = self.bindings_table[existing_row, 3].val
-                old_slot = int(self.bindings_table[existing_row, 4].val) if self.bindings_table.numCols > 4 else 1
+                old_slot = (
+                    int(self.bindings_table[existing_row, 4].val)
+                    if self.bindings_table.numCols > 4
+                    else 1
+                )
 
-                if old_type == bind_type and str(old_val) == str(value) and old_slot == slot_val:
-                    debug(f"[{script_name}] Skip unchanged {replicant.name}.{par.name} (slot {slot_val})")
+                if (
+                    old_type == bind_type
+                    and str(old_val) == str(value)
+                    and old_slot == slot_val
+                ):
+                    debug(
+                        f"[{script_name}] Skip unchanged {replicant.name}.{par.name} (slot {slot_val})"
+                    )
                     continue
                 else:
                     self.bindings_table[existing_row, 2].val = bind_type
@@ -171,12 +191,16 @@ class LibraryEXT:
                     if self.bindings_table.numCols <= 4:
                         self.bindings_table.appendCol("SceneSlot")
                     self.bindings_table[existing_row, 4].val = str(slot_val)
-                    debug(f"[{script_name}] Updated {replicant.name}.{par.name} ({bind_type}) = {value}, slot {slot_val}")
+                    debug(
+                        f"[{script_name}] Updated {replicant.name}.{par.name} ({bind_type}) = {value}, slot {slot_val}"
+                    )
             else:
                 # new entry -> append row
                 row = [replicant.name, par.name, bind_type, str(value), str(slot_val)]
                 self.bindings_table.appendRow(row)
-                debug(f"[{script_name}] Added {replicant.name}.{par.name} ({bind_type}) = {value}, slot {slot_val}")
+                debug(
+                    f"[{script_name}] Added {replicant.name}.{par.name} ({bind_type}) = {value}, slot {slot_val}"
+                )
 
         debug(f"[{script_name}] Finished storing bindings for '{replicant.name}'")
 
@@ -211,7 +235,9 @@ class LibraryEXT:
                 slot_index = 1  # fallback
 
         knob_offset = (slot_index - 1) * 8
-        debug(f"[Bindings] Restoring for {replicant.name} in {parent_name}, knob offset {knob_offset}")
+        debug(
+            f"[Bindings] Restoring for {replicant.name} in {parent_name}, knob offset {knob_offset}"
+        )
 
         for r in range(1, self.bindings_table.numRows):
             if self.bindings_table[r, 0].val != replicant.name:
@@ -241,7 +267,9 @@ class LibraryEXT:
                     par.bindExpr = value
                 elif bind_type == "expr":
                     par.expr = value
-                debug(f"[Bindings] Restored {replicant.name}.{param_name} ({bind_type})")
+                debug(
+                    f"[Bindings] Restored {replicant.name}.{param_name} ({bind_type})"
+                )
             except Exception as e:
                 debug(
                     f"[Bindings] Failed to restore {replicant.name}.{param_name}: {e}"
@@ -274,16 +302,24 @@ class LibraryEXT:
 
         # Bind the parameter
         param.bindExpr = f"op('{knob_op_path}').par.Value0"
-        debug(f"[KnobBind] Bound {visual_container.path}.{param.name} -> {knob_op_path}.Value0")
+        debug(
+            f"[KnobBind] Bound {visual_container.path}.{param.name} -> {knob_op_path}.Value0"
+        )
 
         # Update Bindparameterref on the knob
         if hasattr(knob_op.par, "Bindparameterref"):
-            current = knob_op.par.Bindparameterref.eval() if hasattr(knob_op.par.Bindparameterref, "eval") else knob_op.par.Bindparameterref.val
+            current = (
+                knob_op.par.Bindparameterref.eval()
+                if hasattr(knob_op.par.Bindparameterref, "eval")
+                else knob_op.par.Bindparameterref.val
+            )
             current_names = [n.strip() for n in (current or "").split(",") if n.strip()]
             if param.name not in current_names:
                 current_names.append(param.name)
             knob_op.par.Bindparameterref.val = ", ".join(current_names)
-            debug(f"[KnobBind] Updated {knob_op_path}.Bindparameterref -> {knob_op.par.Bindparameterref.val}")
+            debug(
+                f"[KnobBind] Updated {knob_op_path}.Bindparameterref -> {knob_op.par.Bindparameterref.val}"
+            )
 
         # Update visual_bindings table
         table = self.bindings_table
@@ -302,7 +338,11 @@ class LibraryEXT:
             row_parent = table[r, 0].val
             row_param = table[r, 1].val
             row_slot = int(table[r, 4].val) if table.numCols > 4 else 1
-            if row_parent == visual_container.parent().name and row_param == param.name and row_slot == slot_val:
+            if (
+                row_parent == visual_container.parent().name
+                and row_param == param.name
+                and row_slot == slot_val
+            ):
                 existing_row = r
                 break
 
@@ -313,10 +353,22 @@ class LibraryEXT:
             table[existing_row, 2].val = bind_type
             table[existing_row, 3].val = value
             table[existing_row, 4].val = str(slot_val)
-            debug(f"[KnobBind] Updated table row {existing_row}: {param.name} -> {value} (slot {slot_val})")
+            debug(
+                f"[KnobBind] Updated table row {existing_row}: {param.name} -> {value} (slot {slot_val})"
+            )
         else:
-            table.appendRow([visual_container.parent().name, param.name, bind_type, value, str(slot_val)])
-            debug(f"[KnobBind] Added table entry: {param.name} -> {value} (slot {slot_val})")
+            table.appendRow(
+                [
+                    visual_container.parent().name,
+                    param.name,
+                    bind_type,
+                    value,
+                    str(slot_val),
+                ]
+            )
+            debug(
+                f"[KnobBind] Added table entry: {param.name} -> {value} (slot {slot_val})"
+            )
 
         # --- Print AFTER ---
         debug("[KnobBind] Table AFTER update:")
