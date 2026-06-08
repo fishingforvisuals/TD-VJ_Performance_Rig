@@ -41,7 +41,7 @@ def onReplicate(comp, allOps, newOps, template, master):
         c.par.alignorder = c.digits
 
         # TODO: disable cooking from Visuals
-        c.op("visual").allowCooking = 1
+        c.op("visual").allowCooking = 0
         pass
 
     return
