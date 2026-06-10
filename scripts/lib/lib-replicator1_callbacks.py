@@ -15,7 +15,9 @@ def onRemoveReplicant(comp, replicant):
 
 
 def onReplicate(comp, allOps, newOps, template, master):
-
+    """
+    initialize childrens parameters
+    """
     for c in newOps:
         run("op('{}').viewer = False".format(c.path), delayFrames=1)
         # c.render = True
@@ -26,6 +28,7 @@ def onReplicate(comp, allOps, newOps, template, master):
         c.op("visual").par.enableexternaltoxpulse.pulse()
         op("video_input").outputConnectors[0].connect(c.inputConnectors[0])
         c.tags.add("visual")
+        # TODO: set the visuals in the library to a preview resolution pull the values from the settings table or constant
         # c.op("visual").par.w = 400
         # c.op("visual").par.h = 300
         c.op("visual").par.hmode = 1

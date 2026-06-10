@@ -35,6 +35,9 @@ It would be nice to add functionalities for other data assignments e.g. CHOPs
 ## next tasks
 - [x] rework library management
 - [ ] update drag and drop scripts
-- [ ] update scene loader
+- [ ] update scene loader ->
+ - use load external tox or enine or both and add a switch mode
+ - this is where output resolution will get applied
 - [ ] fix midi twister assignments
 - [ ] fix storing the assignments with the visuals
+- [ ] visuals thumbnails are of size 1280x720 -> decrease it and test if hovering over the visuals can be used to enable cooking for previewing (or click on visual to preview)

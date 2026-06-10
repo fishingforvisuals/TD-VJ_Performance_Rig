@@ -1,10 +1,12 @@
 import re
 
+
 def debug_table(table, msg="Table contents"):
     if table:
         debug(f"[select1_callback] {msg}:")
         for r in range(table.numRows):
             debug(f"  Row {r}: {[table[r, c].val for c in range(table.numCols)]}")
+
 
 def _get_par(op_obj, par_name):
     """Fetch a parameter robustly by name."""
@@ -18,6 +20,7 @@ def _get_par(op_obj, par_name):
     debug(f"[select1_callback] Parameter '{par_name}' not found on {op_obj.path}")
     return None
 
+
 def _clear_slot_knobs(replicant_op):
     debug(f"[select1_callback] _clear_slot_knobs called for {replicant_op.path}")
     parent_name = replicant_op.parent().name.lower()
@@ -26,18 +29,24 @@ def _clear_slot_knobs(replicant_op):
         try:
             slot_index = int(parent_name.replace("scene_selector", ""))
         except ValueError:
-            debug(f"[select1_callback] Failed to parse slot index from {parent_name}, defaulting to 1")
+            debug(
+                f"[select1_callback] Failed to parse slot index from {parent_name}, defaulting to 1"
+            )
 
     knob_prefix = "knob"
     start_knob = (slot_index - 1) * 8 + 1
     end_knob = slot_index * 8
 
     # Show knob values before clearing
-    debug(f"[select1_callback] Clearing knobs for slot {slot_index} ({replicant_op.path}) - BEFORE")
+    debug(
+        f"[select1_callback] Clearing knobs for slot {slot_index} ({replicant_op.path}) - BEFORE"
+    )
     for knob_num in range(start_knob, end_knob + 1):
         knob_op = op(f"/midiFighterTwisterV2/{knob_prefix}{knob_num}")
         if knob_op and hasattr(knob_op.par, "Bindparameterref"):
-            debug(f"  {knob_op.path}.Bindparameterref = '{knob_op.par.Bindparameterref.val}'")
+            debug(
+                f"  {knob_op.path}.Bindparameterref = '{knob_op.par.Bindparameterref.val}'"
+            )
         elif knob_op:
             debug(f"  {knob_op.path} has no Bindparameterref")
         else:
@@ -58,7 +67,9 @@ def _clear_slot_knobs(replicant_op):
     for knob_num in range(start_knob, end_knob + 1):
         knob_op = op(f"/midiFighterTwisterV2/{knob_prefix}{knob_num}")
         if knob_op and hasattr(knob_op.par, "Bindparameterref"):
-            debug(f"  {knob_op.path}.Bindparameterref = '{knob_op.par.Bindparameterref.val}'")
+            debug(
+                f"  {knob_op.path}.Bindparameterref = '{knob_op.par.Bindparameterref.val}'"
+            )
 
 
 def _set_bindparameterref(knob_num, ref_name):
@@ -71,18 +82,31 @@ def _set_bindparameterref(knob_num, ref_name):
         debug(f"[select1_callback] {knob_path} has no Bindparameterref")
         return False
 
-    current = knob_op.par.Bindparameterref.eval() if hasattr(knob_op.par.Bindparameterref, "eval") else knob_op.par.Bindparameterref.val
+    current = (
+        knob_op.par.Bindparameterref.eval()
+        if hasattr(knob_op.par.Bindparameterref, "eval")
+        else knob_op.par.Bindparameterref.val
+    )
     current = current.strip() if current else ""
     names = [n.strip() for n in current.split(",") if n.strip()]
     if ref_name not in names:
         names.append(ref_name)
     knob_op.par.Bindparameterref.val = ", ".join(names)
 
-    debug(f"[select1_callback] {knob_path}.Bindparameterref updated: '{current}' -> '{knob_op.par.Bindparameterref.val}'")
+    debug(
+        f"[select1_callback] {knob_path}.Bindparameterref updated: '{current}' -> '{knob_op.par.Bindparameterref.val}'"
+    )
     return True
 
 
 def onDropGetResults(comp, info):
+    # TODO: ensure that this code get impleted as function in main.py, create an UI class even and then only use core functions here
+    # TODO: add explanatory comments to the code!!!
+
+    """
+    This function gets triggered when items are dropped into the corresponding panel and then executes:
+        -
+    """
     debug(f"[select1_callback] onDropGetResults called by {comp.path}, info: {info}")
 
     dropped_replicant_path = info["dragItems"][0]
@@ -98,14 +122,19 @@ def onDropGetResults(comp, info):
     if "Sceneslot" not in [p.name for p in visual_container.pars()]:
         page = visual_container.appendCustomPage("Slot")
         page.appendInt("Sceneslot", label="Scene Slot")
-        debug(f"[select1_callback] Created 'Sceneslot' param for {visual_container.path}")
+        debug(
+            f"[select1_callback] Created 'Sceneslot' param for {visual_container.path}"
+        )
     visual_container.par.Sceneslot = slot_digit
 
-    table = op('/project1/lib/visual_bindings')
+    # check for existing table that stores parameter settings and references of the dropped visual
+    table_path = "/lib/visual_bindings"
+    table = op(table_path)
     if not table:
-        debug(f"[select1_callback] ERROR: Missing /project1/lib/visual_bindings")
+        debug(f"[select1_callback] ERROR: Missing {table_path}")
         return {"droppedOn": comp}
 
+    # TODO: what do these functions actually do?
     debug_table(table, msg=f"BEFORE clearing knobs for slot {slot_digit}")
     _clear_slot_knobs(op(dropped_replicant_path))
 
@@ -123,10 +152,14 @@ def onDropGetResults(comp, info):
 
         par = getattr(visual_container.par, param_name, None)
         if not par:
-            debug(f"[select1_callback][Row {r}] Param '{param_name}' not found on {visual_container.path}")
+            debug(
+                f"[select1_callback][Row {r}] Param '{param_name}' not found on {visual_container.path}"
+            )
             continue
 
-        debug(f"[select1_callback][Row {r}] Processing {param_name}: type={bind_type}, value={value}, orig_slot={orig_slot}")
+        debug(
+            f"[select1_callback][Row {r}] Processing {param_name}: type={bind_type}, value={value}, orig_slot={orig_slot}"
+        )
 
         if bind_type == "bindExpr":
             knob_match = re.search(r"knob(\d+)", value, re.IGNORECASE)
@@ -143,11 +176,15 @@ def onDropGetResults(comp, info):
                 if _set_bindparameterref(new_knob, param_name):
                     mapping_summary.append(f"knob{new_knob} <- {param_name}")
 
-                debug(f"[select1_callback][Row {r}] {param_name}: remapped knob{base_knob} -> knob{new_knob}")
+                debug(
+                    f"[select1_callback][Row {r}] {param_name}: remapped knob{base_knob} -> knob{new_knob}"
+                )
             else:
                 par.bindExpr = value
                 table[r, 4].val = str(slot_digit)
-                debug(f"[select1_callback][Row {r}] {param_name}: bindExpr applied (no knob)")
+                debug(
+                    f"[select1_callback][Row {r}] {param_name}: bindExpr applied (no knob)"
+                )
 
         elif bind_type == "expr":
             par.expr = value
@@ -156,10 +193,16 @@ def onDropGetResults(comp, info):
 
     debug_table(table, msg=f"AFTER processing slot {slot_digit}")
 
+    # this section actually loads the dragged visual into the decks
+    # TODO: this definitely can go into the main.py
     try:
-        op(f"/project1/scene_selector{slot_digit}/select1").par.top = visual_container.path + "/out1"
+        op(f"/scene_selector{slot_digit}/select1").par.top = (
+            visual_container.path + "/out1"
+        )
         op(f"/UI/parameter{slot_digit}").par.op = visual_container.path
-        debug(f"[select1_callback] Linked {visual_container.path} to scene_selector{slot_digit} + UI")
+        debug(
+            f"[select1_callback] Linked {visual_container.path} to scene_selector{slot_digit} + UI"
+        )
     except Exception as e:
         debug(f"[select1_callback] Linking failed: {e}")
 
@@ -173,8 +216,10 @@ def onDropGetResults(comp, info):
 
 # Drag callbacks
 def onDragStartGetItems(comp, info):
+    dragItems = [comp]
     debug(f"[select1_callback] onDragStartGetItems: {comp.path}")
-    return [comp]
+    return dragItems
+
 
 def onHoverStartGetAccept(comp, info):
     debug(f"[select1_callback] onHoverStartGetAccept: {comp.path}")
