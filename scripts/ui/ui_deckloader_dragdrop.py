@@ -9,7 +9,7 @@ def debug_table(table, msg="Table contents"):
 
 
 def _get_par(op_obj, par_name):
-    """Fetch a parameter robustly by name."""
+    """Fetch a parameter by name."""
     try:
         return getattr(op_obj.par, par_name)
     except Exception:
@@ -59,7 +59,6 @@ def _clear_slot_knobs(replicant_op):
             knob_op.par.Bindparameterref.val = ""
             debug(f"[select1_callback] Cleared {knob_op.path}.Bindparameterref")
 
-    # Restore bindings
     debug(f"[select1_callback] Restoring bindings for {replicant_op.path}")
     parent().RestoreBindings(replicant_op)
 
@@ -195,7 +194,7 @@ def onDropGetResults(comp, info):
 
     # this section actually loads the dragged visual into the decks
     # TODO: moved to main.py -> check if extension is loaded in TD
-    load_visual(visual_container)
+    LoadVisual(visual_container)
 
     # TODO: why this?
     if mapping_summary:

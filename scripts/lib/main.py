@@ -48,11 +48,17 @@ class LibraryEXT:
     # Thumbnail methods
     # -----------------------------------------------------------------
     def SetupThumbnail(self, replicant):
+        """
+        Trigger: replicator COMP from the library will recreate all children
+        Function: load thumbnails or create one of none exists
+        """
+        # check if a visual container exists
         visual_container = replicant.op("visual")
         if not visual_container:
             debug(f"[Thumbnail] ERROR: No 'visual' container in {replicant.path}")
             return
 
+        # check if an external tox was loaded
         tox_path = visual_container.par.externaltox.eval()
         if not tox_path:
             debug(f"[Thumbnail] ERROR: No externaltox set on {visual_container.path}")
@@ -99,6 +105,12 @@ class LibraryEXT:
         run(finish_record, delayFrames=10)
 
     def LoadThumbnail(self, replicant, thumb_path):
+        """
+        Trigger: Will be called from the SetupThumbnail() function
+        Function: delete old thumbnail and load the new one
+        """
+        # TODO: would be nice if there was a deliberate update method to the thumbnails so that they don't get deleted on every lib recreation
+
         if not os.path.exists(thumb_path):
             return False
 
@@ -205,6 +217,7 @@ class LibraryEXT:
         debug(f"[{script_name}] Finished storing bindings for '{replicant.name}'")
 
     def StoreAllReplicantBindings(self, replicator_op):
+        # TODO: where to use this?
         replicator = self.getOp(replicator_op)
         if not replicator:
             debug(f"[Bindings] ERROR: replicator '{replicator_op}' not found")
@@ -220,6 +233,10 @@ class LibraryEXT:
                 self.StoreBindings(rep)
 
     def RestoreBindings(self, replicant):
+        """
+        Trigger: call when visual gets loaded into a deck
+        Function: look up bindings table and restore old connetions or values form visual parameters
+        """
         visual_container = replicant.op("visual")
         if not visual_container:
             debug(f"[Bindings] ERROR: No 'visual' container in {replicant.path}")
@@ -280,6 +297,8 @@ class LibraryEXT:
         Bind a parameter to a knob, store it in the visual_bindings table,
         and update Bindparameterref. Fixes slot-based binding issue.
         """
+        # TODO: Where does this get used?
+        
         knob_op = op(knob_op_path)
         if not knob_op or not hasattr(knob_op.par, "Value0"):
             debug(f"[KnobBind] Missing knob or Value0: {knob_op_path}")
@@ -377,7 +396,7 @@ class LibraryEXT:
 
         debug(f"[KnobBind] Finished BindParameterToKnob for {param.name}")
 
-    def load_visual(visual=visual_container):
+    def LoadVisual(visual=visual_container):
         """
         when visual gets dragged onto a deck load the visual into its select TOP
         """
@@ -390,4 +409,4 @@ class LibraryEXT:
                 f"[select1_callback] Linked {visual.path} to scene_selector{slot_digit} + UI"
             )
         except Exception as e:
-            debug(f"[select1_callback] Linking failed: {e}")
+            debug(f"[select1_callback] Linking failed: {e}")t
