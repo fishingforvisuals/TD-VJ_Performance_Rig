@@ -34,6 +34,7 @@ It would be nice to add functionalities for other data assignments e.g. CHOPs
 
 ## next tasks
 - [x] rework library management
+- [ ] visualize UI and its functions with flowchart
 - [ ] update drag and drop scripts
 - [ ] update scene loader ->
  - use load external tox or enine or both and add a switch mode

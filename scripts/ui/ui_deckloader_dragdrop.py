@@ -194,18 +194,10 @@ def onDropGetResults(comp, info):
     debug_table(table, msg=f"AFTER processing slot {slot_digit}")
 
     # this section actually loads the dragged visual into the decks
-    # TODO: this definitely can go into the main.py
-    try:
-        op(f"/scene_selector{slot_digit}/select1").par.top = (
-            visual_container.path + "/out1"
-        )
-        op(f"/UI/parameter{slot_digit}").par.op = visual_container.path
-        debug(
-            f"[select1_callback] Linked {visual_container.path} to scene_selector{slot_digit} + UI"
-        )
-    except Exception as e:
-        debug(f"[select1_callback] Linking failed: {e}")
+    # TODO: moved to main.py -> check if extension is loaded in TD
+    load_visual(visual_container)
 
+    # TODO: why this?
     if mapping_summary:
         debug(f"[select1_callback] Mapping summary: {', '.join(mapping_summary)}")
     else:

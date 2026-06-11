@@ -376,3 +376,18 @@ class LibraryEXT:
             debug(f"  Row {r}: {[table[r, c].val for c in range(table.numCols)]}")
 
         debug(f"[KnobBind] Finished BindParameterToKnob for {param.name}")
+
+    def load_visual(visual=visual_container):
+        """
+        when visual gets dragged onto a deck load the visual into its select TOP
+        """
+        try:
+            op(f"/sceneloader/scene_selector{slot_digit}/select1").par.top = (
+                visual.path + "/out1"
+            )
+            op(f"/UI/parameter{slot_digit}").par.op = visual.path
+            debug(
+                f"[select1_callback] Linked {visual.path} to scene_selector{slot_digit} + UI"
+            )
+        except Exception as e:
+            debug(f"[select1_callback] Linking failed: {e}")
