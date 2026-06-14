@@ -3,6 +3,7 @@ This will become a VJ Mixer completely made in Touchdesigner. It should have fun
 
 ## Basic Functionality
 ### UI
+![ui_windows](mindmap/ui_windows.png)
 The UI Widget has the following areas:
 - left section
     - Output Window
@@ -38,6 +39,7 @@ It would be nice to add functionalities for other data assignments e.g. CHOPs
 - [ ] update drag and drop scripts
 - [ ] update scene loader ->
     - [x] use engine
+        - update UI select tops to show visual sceneslots
         - [ ] show engine info (engine_fps, engine_gpu_mem_used) in UI -> create bar for total memory usage (engine1, engine2 and td network)
         - [ ] update engine callbacks
     - this is where output resolution will get applied
@@ -45,3 +47,7 @@ It would be nice to add functionalities for other data assignments e.g. CHOPs
 - [ ] fix storing the assignments with the visuals
 - [ ] visuals thumbnails are of size 1280x720 -> decrease it and test if hovering over the visuals can be used to enable cooking for previewing (or click on visual to preview)
 - [ ] constantly comment out debug scripts and functions
+- [ ] see if library toxes can be previewed upon hovering with smaller resolution
+- [ ] update visual tox-files with new logic
+    - only one output
+    - resolution picker from a "setup" tab
