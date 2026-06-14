@@ -193,8 +193,7 @@ def onDropGetResults(comp, info):
     debug_table(table, msg=f"AFTER processing slot {slot_digit}")
 
     # this section actually loads the dragged visual into the decks
-    # TODO: moved to main.py -> check if extension is loaded in TD
-    LoadVisual(visual_container)
+    parent().LoadVisualEngine(visual=visual_container.path, slot_digit=slot_digit)
 
     # TODO: why this?
     if mapping_summary:
@@ -208,10 +207,10 @@ def onDropGetResults(comp, info):
 # Drag callbacks
 def onDragStartGetItems(comp, info):
     dragItems = [comp]
-    debug(f"[select1_callback] onDragStartGetItems: {comp.path}")
+    # debug(f"[select1_callback] onDragStartGetItems: {comp.path}")
     return dragItems
 
 
 def onHoverStartGetAccept(comp, info):
-    debug(f"[select1_callback] onHoverStartGetAccept: {comp.path}")
+    # debug(f"[select1_callback] onHoverStartGetAccept: {comp.path}")
     return True

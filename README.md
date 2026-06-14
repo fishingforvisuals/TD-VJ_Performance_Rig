@@ -37,8 +37,10 @@ It would be nice to add functionalities for other data assignments e.g. CHOPs
 - [ ] visualize UI and its functions with flowchart
 - [ ] update drag and drop scripts
 - [ ] update scene loader ->
- - use load external tox or enine or both and add a switch mode
- - this is where output resolution will get applied
+    - [x] use engine
+        - [ ] show engine info (engine_fps, engine_gpu_mem_used) in UI -> create bar for total memory usage (engine1, engine2 and td network)
+        - [ ] update engine callbacks
+    - this is where output resolution will get applied
 - [ ] fix midi twister assignments
 - [ ] fix storing the assignments with the visuals
 - [ ] visuals thumbnails are of size 1280x720 -> decrease it and test if hovering over the visuals can be used to enable cooking for previewing (or click on visual to preview)

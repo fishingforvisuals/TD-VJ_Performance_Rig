@@ -298,7 +298,7 @@ class LibraryEXT:
         and update Bindparameterref. Fixes slot-based binding issue.
         """
         # TODO: Where does this get used?
-        
+
         knob_op = op(knob_op_path)
         if not knob_op or not hasattr(knob_op.par, "Value0"):
             debug(f"[KnobBind] Missing knob or Value0: {knob_op_path}")
@@ -396,8 +396,9 @@ class LibraryEXT:
 
         debug(f"[KnobBind] Finished BindParameterToKnob for {param.name}")
 
-    def LoadVisual(visual=visual_container):
+    def LoadVisualTOPs(self, visual, slot_digit):
         """
+        DEPRECATED -> new method LoadVisualEngine()
         when visual gets dragged onto a deck load the visual into its select TOP
         """
         try:
@@ -409,4 +410,28 @@ class LibraryEXT:
                 f"[select1_callback] Linked {visual.path} to scene_selector{slot_digit} + UI"
             )
         except Exception as e:
-            debug(f"[select1_callback] Linking failed: {e}")t
+            debug(f"[/UI/select1_callback] Linking failed: {e}")
+
+    def LoadVisualEngine(self, visual, slot_digit):
+        visual_op = op(visual) if isinstance(visual, str) else visual
+        engine_op = op(f"/sceneloader/engine{slot_digit}")
+
+        print("visual:", visual)
+        print("visual_op:", visual_op)
+        print("engine_op:", engine_op)
+
+        try:
+            if visual_op is None:
+                raise Exception(f"visual_op not found: {visual}")
+
+            if engine_op is None:
+                raise Exception(f"engine_op not found: sceneloader/engine{slot_digit}")
+
+            print("externaltox par:", visual_op.par.externaltox)
+            print("externaltox value:", visual_op.par.externaltox.eval())
+
+            engine_op.par.file = visual_op.par.externaltox.eval()
+            engine_op.par.reload.pulse()
+
+        except Exception as e:
+            debug(f"[UI/select1_callback] Linking with Engine failed: {e}")
