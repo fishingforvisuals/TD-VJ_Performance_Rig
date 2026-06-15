@@ -36,12 +36,12 @@ It would be nice to add functionalities for other data assignments e.g. CHOPs
 ## next tasks
 - [x] rework library management
 - [ ] visualize UI and its functions with flowchart
-- [ ] update drag and drop scripts
+- [x] update drag and drop scripts
 - [ ] update scene loader ->
     - [x] use engine
-        - update UI select tops to show visual sceneslots
+        - [x] update UI select tops to show visual sceneslots
         - [ ] show engine info (engine_fps, engine_gpu_mem_used) in UI -> create bar for total memory usage (engine1, engine2 and td network)
-        - [ ] update engine callbacks
+        - [ ] update engine callbacks to always connect them to the slot COMPs and video input if available
     - this is where output resolution will get applied
 - [ ] fix midi twister assignments
 - [ ] fix storing the assignments with the visuals
