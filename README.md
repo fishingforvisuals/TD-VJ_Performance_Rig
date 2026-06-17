@@ -40,7 +40,7 @@ It would be nice to add functionalities for other data assignments e.g. CHOPs
 - [ ] update scene loader ->
     - [x] use engine
         - [x] update UI select tops to show visual sceneslots
-        - [ ] show engine info (engine_fps, engine_gpu_mem_used) in UI -> create bar for total memory usage (engine1, engine2 and td network)
+        - [x] show engine info (engine_fps, engine_gpu_mem_used) in UI -> create bar for total memory usage (engine1, engine2 and td network)
         - [ ] update engine callbacks to always connect them to the slot COMPs and video input if available
     - this is where output resolution will get applied
 - [ ] fix midi twister assignments
