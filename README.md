@@ -51,4 +51,4 @@ It would be nice to add functionalities for other data assignments e.g. CHOPs
 - [ ] see if library toxes can be previewed upon hovering with smaller resolution
 - [ ] update visual tox-files with new logic
     - only one output
-    - resolution picker from a "setup" tab
+    - resolution picker from a "setup" tab -> optimize visuals to work with different resolutions

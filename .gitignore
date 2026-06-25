@@ -21,3 +21,6 @@ cache/
 # visual library
 /tox
 /storeDATs
+
+# FunctionStoreTools
+/logs

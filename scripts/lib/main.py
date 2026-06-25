@@ -413,6 +413,10 @@ class LibraryEXT:
             debug(f"[/UI/select1_callback] Linking failed: {e}")
 
     def LoadVisualEngine(self, visual, slot_digit):
+        """
+        Trigger: Visual is dropped onto a deck of the sceneloader
+        Description: load visual into the engine and start it
+        """
         visual_op = op(visual) if isinstance(visual, str) else visual
         engine_op = op(f"/sceneloader/engine{slot_digit}")
 
