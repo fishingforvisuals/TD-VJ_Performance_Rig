@@ -2,6 +2,47 @@
 # base COMP with extension
 base = parent(2)
 
+def checkEngineRange(dragItemOwner):
+	if dragItemOwner == "/sceneloader/engine1":
+		engine_range = [1,8]
+		return engine_range
+	elif dragItemOwner == "/sceneloader/engine2":
+		engine_range = [9,16]
+		return engine_range
+
+def checkKnobDeckMatch(comp, dragItemOwner):
+	"""
+	when the knob is inside the range of what the engines can be assigned to return true
+	Args:
+		comp: the panel component being hovered over
+		dragItemOwner: from which operator does the visual come 
+	"""
+	# prepare knob digit
+	parts = comp.path.split('/')
+	# ['', 'midiMap', 'knobs', 'knob1', 'label', 'text']
+	if len(parts) >= 4 and parts[1] == 'midiMap' and parts[2] == 'knobs':
+		name = parts[3]
+		if name.startswith('knob'):
+			knob_digit = int(name.replace("knob", ""))
+	
+	
+	if dragItemOwner == "/sceneloader/engine1":
+		engine_range = [1,8]
+		
+		if knob_digit in range(engine_range[0], engine_range[1]):
+			# print("Parameter accepted")
+			return True
+	elif dragItemOwner == "/sceneloader/engine2":
+		engine_range = [9,16]
+		if knob_digit in range(engine_range[0], engine_range[1]):
+			# print("Parameter accepted")
+			return True
+	else:
+		return False
+	
+		# 
+	return None
+
 def onHoverStartGetAccept(comp, info):
 	"""
 	Called when comp needs to know if dragItems are acceptable as a drop.
@@ -16,9 +57,14 @@ def onHoverStartGetAccept(comp, info):
 		True if comp can receive dragItems
 	"""
 	#debug('\nonHoverStartGetAccept comp:', comp.path, '- info:\n', info)
-	print(comp)
+	print("Hover over: ", comp, ", dragItems: ", info.get("dragItems")[0].owner)
+	# print(comp.name.replace("/knob0", "").replace("/", ""))
+
+
+	knob_match = checkKnobDeckMatch(comp, info.get("dragItems")[0].owner)
 	
-	return True # accept what is being dragged
+
+	return knob_match # accept what is being dragged
 
 def onHoverEnd(comp, info):
 	"""
@@ -60,7 +106,7 @@ def onDropGetResults(comp, info):
 	target.pars(par_name)[0].mode = ParMode.BIND
 	target.pars(par_name)[0].bindExpr = f"op('{droppedOn}').par.Value0"
 
-	update_range = [1,17]
+	update_range = checkEngineRange(dropped_item.owner)
 	scope = dropped_item.owner
 	# update labels in specific range via main.py script
 	run(f"op('{base}').LabelKnob(args[0], args[1], args[2])", comp, update_range, scope, delayFrames=1)
