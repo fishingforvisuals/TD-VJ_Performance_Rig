@@ -16,6 +16,8 @@ def onHoverStartGetAccept(comp, info):
 		True if comp can receive dragItems
 	"""
 	#debug('\nonHoverStartGetAccept comp:', comp.path, '- info:\n', info)
+	print(comp)
+	
 	return True # accept what is being dragged
 
 def onHoverEnd(comp, info):
